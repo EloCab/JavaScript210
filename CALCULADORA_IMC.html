@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CALCULE SU IMC</title>
+    <meta charset="UTF-8">
+    <script>
+        //window.alert("Bienvenido");
+        console.log("Ha entrado en la página")
+        function Resultado(txtPeso, txtAltura) {
+            let numero1 = document.getElementById("txtPeso").value;
+            let numero2 = document.getElementById("txtAltura").value;
+            let resultado = numero1 / (numero2 * numero2);
+
+            document.getElementById("txtResultadoIMC").value = resultado;
+
+            if (resultado < 16) {
+                document.getElementById("txtInterpretacion").value = "Desnutrido";
+            }
+            else
+                if (resultado >= 16 && resultado < 18) {
+                    document.getElementById("txtInterpretacion").value = "Delgado";
+                }
+                else
+                    if (resultado >= 18 && resultado < 25) {
+                        document.getElementById("txtInterpretacion").value = "Ideal";
+                    }
+                    else
+                        if (resultado >= 25 && resultado < 31) {
+                            document.getElementById("txtInterpretacion").value = "Sobrepeso";
+                        }
+                        else
+                            if (resultado >= 31) {
+                                document.getElementById("txtInterpretacion").value = "Obeso";
+                            }
+        }
+
+
+        function LimpiarDatos() {
+            document.getElementById("txtPeso").value = "";
+            document.getElementById("txtAltura").value = "";
+            document.getElementById("txtResultadoIMC").value = "";
+            document.getElementById("txtInterpretacion").value = "";
+        }
+
+    </script>
+</head>
+
+<body>
+    <fieldset style="width:400px">
+        <legend>CALCULADORA IMC</legend>
+
+        <label>PESO</label>
+        <input type="text" id="txtPeso" /><br />
+        <label>ALTURA</label>
+        <input type="text" id="txtAltura" /><br><br>
+        <input onclick="Resultado(txtPeso,txtAltura)" type="button" id="btnResultado" value="Resultado" />
+        &nbsp;&nbsp;&nbsp;
+        <input onclick="LimpiarDatos()" type="button" id="btnLimpiar" value="Limpiar" />
+        <br><br>
+        <label>IMC</label>
+        <input type="text" id="txtResultadoIMC" />
+        <br><br>
+        <label>Interpretación del resultado</label>
+        <input type="text" id="txtInterpretacion" />
+
+
+    </fieldset>
+
+
+
+
+    </form>
+</body>
+
+</html>
