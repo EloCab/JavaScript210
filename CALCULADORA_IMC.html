@@ -7,32 +7,76 @@
     <script>
         //window.alert("Bienvenido");
         console.log("Ha entrado en la página")
+        function obtenerIMCNominal(imc_numerico) {
+            let imc_nominal = "";
+
+            if (imc_numerico < 16) {
+                imc_nominal = "DESNUTRIDO";
+            } else if ((imc_numerico >= 16) && (imc_numerico < 18)) {
+                imc_nominal = "DELGADO";
+            } else if ((imc_numerico >= 18) && (imc_numerico < 25)) {
+                imc_nominal = "IDEAL";
+            } else if ((imc_numerico >= 25) && (imc_numerico < 31)) {
+                imc_nominal = "SOBREPESO";
+            } else {
+                imc_nominal = "OBESO";
+            }
+
+            return imc_nominal;
+
+        }
+
+
+        function obtenerIMCImagen(imc_nominal) {
+            let elemento_img;
+            let elemento_padre = document.getElementById("hook_imagen")
+
+            if (elemento_padre.childElementCount == 0)
+            {
+                elemento_img = document.createElement("img");
+                elemento_padre.appendChild(elemento_img);
+            }
+            else {
+                elemento_img = elemento_padre.firstChild;
+            }
+
+            switch (imc_nominal)
+            {
+                case "DESNUTRIDO":
+                elemento_img.src = "imagenes/desnutrido.jpg";
+                break;
+
+                case "DELGADO":
+                elemento_img.src = "imagenes/delgado.jpg";
+                break;
+
+                case "IDEAL":
+                elemento_img.src = "imagenes/ideal.jpg";
+                break;
+
+                case "SOBREPESO":
+                elemento_img.src = "imagenes/sobrepeso.jpg";
+                break;
+
+                case "OBESO":
+                elemento_img.src = "imagenes/obeso.jpg";
+                break;
+
+            }
+            return elemento_img;
+
+        }
+
         function Resultado(txtPeso, txtAltura) {
             let numero1 = document.getElementById("txtPeso").value;
             let numero2 = document.getElementById("txtAltura").value;
             let resultado = numero1 / (numero2 * numero2);
 
             document.getElementById("txtResultadoIMC").value = resultado;
+            let imc_nominal = obtenerIMCNominal(resultado);
+            document.getElementById("txtInterpretacion").value = imc_nominal;
 
-            if (resultado < 16) {
-                document.getElementById("txtInterpretacion").value = "Desnutrido";
-            }
-            else
-                if (resultado >= 16 && resultado < 18) {
-                    document.getElementById("txtInterpretacion").value = "Delgado";
-                }
-                else
-                    if (resultado >= 18 && resultado < 25) {
-                        document.getElementById("txtInterpretacion").value = "Ideal";
-                    }
-                    else
-                        if (resultado >= 25 && resultado < 31) {
-                            document.getElementById("txtInterpretacion").value = "Sobrepeso";
-                        }
-                        else
-                            if (resultado >= 31) {
-                                document.getElementById("txtInterpretacion").value = "Obeso";
-                            }
+            obtenerIMCImagen(imc_nominal);
         }
 
 
@@ -66,10 +110,7 @@
 
 
     </fieldset>
-
-
-
-
+    <div id="hook_imagen"></div>
     </form>
 </body>
 
