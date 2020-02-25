@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EJERCICIOS BASICOS</title>
+    <script>
+        window.onload = basicos;
+        function ejercicio (palabra,letra)
+        {
+            //EJERCICIO 1 CON UNA SOLA INSTRUCCION
+            let encontrado = false;
+            if (palabra.indexOf(letra) !== -1 )
+            {
+                encontrado = true;
+            }  
+            console.log (palabra.indexOf(letra));
+            console.log (encontrado);            
+            return encontrado;
+        }
+        function ejercicio1 (palabra,letra)
+        {
+            // HACER UN MÉTODO QUE RECIBA UNA CADENA Y UN CARÁCTER Y 
+            // DIGA SI ESE CARÁCTER PERTENECE A LA CADENA O NO
+            var existe = false;
+            var i = 0;
+            while ((i < palabra.length) && (!existe))
+            {
+                if (palabra [i] == letra)
+                {
+                    existe = true;
+                }
+                i = i + 1;
+            }
+            
+            return existe;
+        }
+
+        function ejercicio2 (palabra,letra)
+        {
+            // HACER UN MÉTODO QUE RECIBA UNA CADENA Y UN CARÁCTER Y DIGA 
+            // CUÁNTAS VECES APARECE ESE CARA CARÁCTER EN LA CADENA
+            let contador = 0;
+            for (let i = 0; i < palabra.length; i++) {
+              if (palabra [i] == letra)
+              {
+                  contador = contador + 1;
+              }   
+            }
+            return contador; 
+        }
+
+        function ejercicio3 (numero)
+        {
+            var resultado;
+            //  HACER UN MÉTODO QUE DADO UN NÚMERO, DIGA SI ES PAR O NO
+            if ((numero % 2) == 0)
+            {
+                console.log ("El numero " + numero + " es par" );
+                resultado = "par";
+            }
+            else
+            {
+                console.log ("El numero " + numero + " es impar" );
+                resultado = "impar";
+            }
+            return resultado;
+
+        }
+
+        function ejercicio4 (edad)
+        {
+            //  HACER UN MÉTODO QUE LE PIDA AL USUARIO SU EDAD 
+            // Y LE DIGA SI ES MAYOR DE EDAD O NO
+            var resultado;
+            if (edad >= 18)
+            {
+                console.log ("Eres mayor de edad" );
+                resultado = "Eres mayor de edad";
+            }
+            else
+            {
+                console.log ("Eres menor de edad" );
+                resultado = "Eres menor de edad";
+            }
+            return resultado;
+ 
+        }
+
+        function ejercicio5 (nota)
+        {
+            // HACER UN MÉTODO QUE RECIBA UNA NOTA DE 
+            // 0 A 10 Y DIGA SI EQUIVALE A UN APROBADO, BIEN, NOTABLE, O SOBRESALIENTE
+            var resultado;
+            if (nota < 5)
+            {
+                resultado = "Has suspendido; sigue intentándolo";
+                console.log ("Has suspendido; sigue intentándolo");
+            } else if (nota == 5)
+            {
+                resultado = "Has aprobado";
+                console.log ("Has aprobado");
+            } else if (nota == 6)
+            {
+                resultado = "Tienes un bien";
+                console.log ("Tienes un bien");
+            } else if ((nota == 7) || (nota == 8))
+            {
+                resultado = "Tienes un notable";
+                console.log ("Tienes un notable");
+            } else 
+            {
+                resultado = "Tienes un sobresaliente";
+                console.log ("Tienes un sobresaliente");
+            }
+        }
+
+        function ejercicio6 (cadena)
+        {
+            var cadena_del_reves = "";
+            for (let i = 0; i < cadena.length; i++) 
+            {
+                cadena_del_reves = cadena [i] + cadena_del_reves; 
+            }
+        
+            console.log (cadena_del_reves);
+            return cadena_del_reves;
+        }
+
+        function ejercicio7 ()
+        {
+            // HACER UN PROGRAMA QUE MUESTRE LA SECUENCIA 3, 6, 9, 12, 15 ...99
+            for (var i = 0; i < 100; i+=3) 
+            {
+                console.log (i);
+            }
+        }
+
+
+        function basicos ()
+        {
+            //var resultado = ejercicio ("vale","e");
+            //console.log (resultado);
+
+            var resultado = ejercicio1("vale","a");
+            console.log (resultado);
+
+            //ejercicio2("abcdabcdabcd","b");
+            //ejercicio3(15);
+            //ejercicio4(15);
+            //  ejercicio5(7);
+            //ejercicio6("esdrujula");
+            //ejercicio7();
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

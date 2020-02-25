@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>GEOLOCALIZACION CON MAPA</title>
+
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+
+        h1 {
+            margin: 150px 0 30px 0;
+            text-align: center;
+        }
+
+        #lienzoMapa {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border: 5px solid;
+        }
+    </style>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+    <script>
+        var map;
+        var latitud;
+        var longitud;
+
+        function getLocation() {
+            var x = document.getElementById("demo");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, errorHandler);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            latitud = position.coords.latitude;
+            longitud = position.coords.longitude;
+            console.log ("latitud" + latitud);
+            console.log ("longitud" + longitud);
+            buscar_mi_posicion (latitud,longitud);
+        }
+
+        function errorHandler(err) {
+            if (err.code == 1) {
+                alert("Error: Acceso denegado!");
+            } else if (err.code == 2) {
+                alert("Error: Posición no disponible!");
+            }
+        }
+
+        function buscar_mi_posicion(latitud, longitud) {
+            var mapOptions = {
+                zoom: 4,
+                center: new google.maps.LatLng(latitud,longitud)
+            };
+            map = new google.maps.Map(document.getElementById('lienzoMapa'), mapOptions);
+        }
+        //google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body>
+    <div>
+        <p>Pulsa el botón para obtener tus coordenadas</p>
+        <br>
+        <button onclick="getLocation()">PULSAR</button>
+        <br>
+        <div id="lienzoMapa"></div>
+    </div>
+</body>
+
+
+</html>

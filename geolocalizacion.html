@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEOLOCALIZADOR</title>
+    <style>
+        * {
+            margin: auto;
+        }
+
+        body {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        div {
+            margin-top: 10%;
+            width: 30%;
+
+        }
+    </style>
+    <script>
+
+        function getLocation() {
+            var x = document.getElementById("demo");
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, errorHandler);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            var x = document.getElementById("demo");
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+        }
+
+        function errorHandler(err) {
+            if (err.code == 1) {
+                alert("Error: Acceso denegado!");
+            } else if (err.code == 2) {
+                alert("Error: Posición no disponible!");
+            }
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div>
+        <p>Pulsa el botón para obtener tus coordenadas</p>
+        <br>
+        <button onclick="getLocation()">PULSAR</button>
+        <br>
+        <p id="demo"></p>
+    </div>
+</body>
+
+</html>

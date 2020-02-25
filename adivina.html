@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina número</title>
+    <style>
+        * {
+            margin: auto;
+        }
+
+        h1 {
+            margin-top: 3em;
+            ;
+        }
+
+        body {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        div {
+            margin-top: 2em;
+            ;
+            width: 30%;
+
+        }
+
+        input {
+            margin-top: 2em;
+            ;
+        }
+    </style>
+
+    <script>
+        //Pasos para el algoritmo para crear un numero aleatorio que el usuario tiene que acertar
+        // 1- Genenerar numero aleatorio
+        // 2- Pueden pasar tres cosas:
+        //    Acierto -> Entonces felicitamos
+        //    Menor   -> Avisamos de que es menor
+        //    Mayor   -> Avisamos de que es mayor
+        // 3- El usuario tiene 5 intentos para acertar
+        // 4- Cada vez que hace un intento vuelve al inicio para volver a preguntar
+        // 5- Si se acaban las vidas mensaje de GAME OVER y link a VOLVER A EMPEZAR
+
+        const VIDAS = 5;
+        var numero_a_averiguar;
+        var acierto = false;
+        var intentos = 0;
+        var numero_vidas;
+        window.onload = calcularNumeroSecreto; //no lleva () para que no se ejecute hasta que no se haya cargado toda la página; con ()
+
+        function calcularNumeroSecreto() {
+            numero_a_averiguar = Math.floor(Math.random() * 10) + 1;
+            console.log(numero_a_averiguar);
+            numero_vidas = VIDAS;
+            document.getElementById("vidasRestantes").value = numero_vidas;
+        }
+
+
+        function jugar() {
+            var apuesta = document.getElementById("numeroElegido").value;
+
+            intentos = intentos + 1;
+            numero_vidas = numero_vidas - 1;
+            document.getElementById("vidasRestantes").value = numero_vidas;
+
+
+            if (apuesta == numero_a_averiguar) {
+                acierto = true;
+                window.alert("Felicidades!!!");
+            }
+            else if (apuesta > numero_a_averiguar) {
+                window.alert("El número es menor");
+            }
+            else {
+                window.alert("El número es mayor");
+            }
+
+            //si ha alcanzo el límite de intentos y no ha acertado
+            //&& y lógico
+            //|| ó
+            if ((intentos == VIDAS) && (!acierto)) {
+                console.log("FIN DEL JUEGO");
+                window.alert("GAME OVER. Reinicio");
+                window.location.reload(true);//recargo la página forzosamente
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1> Adivina un número del 1 al 10</h1>
+
+    <div class="caja">
+        <fieldset>
+            <legend> Escoge un número </legend>
+            <input type="text" id="numeroElegido"><br>
+            <input type="submit" value="¡Inténtalo!" onclick="jugar()">
+        </fieldset>
+
+        <fieldset>
+            <legend> Numero de vidas restantes </legend>
+            <input type="text" id="vidasRestantes"><br>
+        </fieldset>
+
+
+    </div>
+
+</body>
+
+</html>
