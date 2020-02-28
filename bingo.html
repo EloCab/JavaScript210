@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BINGO</title>
+    <style>
+        tr,
+        td {
+            width: 3em;
+            height: 3em;
+            border: 2px solid #388ce0;
+        }
+    </style>
+    <script>
+        window.onload = dibujar_carton;
+        const MAX_FILAS = 3;
+        const MAX_COLUMNAS = 9;
+        var array_casillas;
+        var numeros_carton = [];
+
+        function dibujar_carton() {
+            let elemento_padre = document.getElementById("carton");
+            let elemento_fila;
+            let elemento_columna;
+            for (let i = 0; i < MAX_FILAS; i++) {
+                elemento_fila = document.createElement("tr");
+                for (let j = 0; j < MAX_COLUMNAS; j++) {
+                    elemento_columna = document.createElement("td");
+                    elemento_fila.appendChild(elemento_columna);
+                }
+                elemento_padre.appendChild(elemento_fila);
+            }
+            rellenar_carton();
+            console.log ("numeros carton" numeros_carton);
+        }
+
+        function generarNumAleatorio() {
+            let numero;
+            let existe = false;
+            do {
+                numero = Math.floor(Math.random() * 90) + 1;  
+                existe = existe_numero (array_casillas,numero);
+            } while (existe);
+            
+            return numero;
+        }
+
+        function rellenar_carton() {
+            var casilla_actual;//variable auxiliar
+            var numero_aleatorio;
+            array_casillas = document.getElementsByTagName("td");
+            
+
+            for (let i = 0; i < array_casillas.length; i++) {
+                numero_aleatorio = generarNumAleatorio();
+                casilla_actual = array_casillas[i];
+                casilla_actual.innerHTML = numero_aleatorio;
+                numeros_carton.push(numero_aleatorio);
+            }
+        }
+        function existe_numero (cadena,numero)
+        {
+            
+            var existe = false;
+            var i = 0;
+            while ((i < cadena.length) && (!existe))
+            {
+                if (cadena [i].innerHTML == numero)
+                {
+                    existe = true;
+                }
+                i = i + 1;
+            }
+            
+            return existe;
+        }
+
+    </script>
+</head>
+
+<body>
+    <table id="carton"></table>
+</body>
+
+</html>
