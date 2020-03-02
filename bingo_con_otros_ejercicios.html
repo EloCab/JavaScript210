@@ -14,10 +14,12 @@
         }
     </style>
     <script>
+        //TODO dibujar cartón
         const MAX_FILAS = 3;
         const MAX_COLUMNAS = 9;
 
         var numeros_carton = [];//array vacío de números
+        var numeros_no_estan = [];
         var saca = [];          //todas las bolas
         var posicion_saca = 0;  //la bola por la que voy
         window.onload = dibujarCarton;
@@ -29,35 +31,112 @@
             return numero;
         }
 
+        function deMayorAMenor(a, b) {
+            var numero = 0;
+            if (a > b) { numero = -1 }
+            else if (a < b) { numero = 1 };
+            return numero;
+        }
+
         function ordenarCarton() {
             numeros_carton.sort(deMenorAMayor);
+
+        }
+
+        function devuelveMayor(numeros_carton) {
+            var mayor;
+            numeros_carton.sort(deMayorAMenor);
+            mayor = numeros_carton[0];
+            console.log("mayor" + numeros_carton[0]);
+            return mayor;
+        }
+
+        function devuelveMenor(numeros_carton) {
+            var menor;
+            numeros_carton.sort(deMenorAMayor);
+            menor = numeros_carton[0];
+            console.log("menor" + numeros_carton[0]);
+            return menor;
+        }
+
+        function numerosQueNoEstanEnElCarton() {
+            // hacer una función que devuelva un array con los números
+            // que no están en el cartón
+            var numeros_no_carton = [];
+
+            for (let i = 1; i <= 90; i++) {
+                if ((numeros_carton.indexOf(i) == -1)) {
+                    numeros_no_carton.push(i);
+                }
+            }
+
+            return numeros_no_carton;
+        }
+
+        function contar_impares() {
+            var contador_impares = 0;
+            for (let i = 0; i < numeros_carton.length; i++) {
+                if (numeros_carton[i] % 2 != 0) {
+                    contador_impares++;
+                }
+
+            }
+            console.log("contador impares " + contador_impares);
+            return contador_impares;
+        }
+
+        function le_gusta_a_luisa()
+        // Que tenga el número 5, que tenga el 33, y que tengan más impares que pares
+        {
+            var num_impares = contar_impares();
+            if ((numeros_carton.indexOf(5) != -1) && (numeros_carton.indexOf(33) != -1) &&
+                (num_impares >= 14)) {
+                console.log("le gusta a Luisa");
+                document.getElementById("resultadoLuisa").innerHTML = "ES DE LUISA";
+            } else {
+                console.log(" NO le gusta a Luisa");
+                document.getElementById("resultadoLuisa").innerHTML = "NO ES DE LUISA";
+            }
         }
 
         function generarNumAleatorio() {
             let numero_aleatorio;
+
             numero_aleatorio = Math.floor(Math.random() * (90)) + 1;
+
             return numero_aleatorio;
         }
-
         function rellenarCarton() {
+            //TODO rellenar los tds con números aleatorios [1,90]
+            //obtener los tds
             let array_tds = document.getElementsByTagName("td");
             let numero_aleatorio;
 
             var index = 0;
             do {
                 numero_aleatorio = generarNumAleatorio();
-                 if (numeros_carton.indexOf(numero_aleatorio) == -1) {
+                //comprobar que numero_aleatorio NO esté en numeros_carton
+                if (numeros_carton.indexOf(numero_aleatorio) == -1) {
+                    console.log("numero VÁLIDO");
+                    //array_tds[index].innerHTML = numero_aleatorio;
                     numeros_carton.push(numero_aleatorio);
                     index++;
                 }
+
             } while (numeros_carton.length < array_tds.length);
             console.log("Numeros cartón = " + numeros_carton);
             ordenarCarton();
             for (let i = 0; i < numeros_carton.length; i++) {
                 array_tds[i].innerHTML = numeros_carton[i];
-            }
-        }
 
+            }
+
+
+            le_gusta_a_luisa();
+            numeros_no_estan = numerosQueNoEstanEnElCarton();
+            console.log(numeros_no_estan);
+
+        }
         function dibujarCarton() {
             let tabla = document.getElementById("carton");
             let fila;
@@ -72,7 +151,9 @@
             }
             rellenarCarton();
             llenarSaca ();
-         }
+            var mayor = devuelveMayor(numeros_carton);
+            var menor = devuelveMenor(numeros_carton);
+        }
 
         function shuffle(a) {
                 var j, x, i;
@@ -86,13 +167,13 @@
             }
 
         function llenarSaca() {
-            for (let nbola = 1; nbola <= 90; nbola++){
+            for (let nbola = 1; nbola < 90; nbola++){
                 saca.push(nbola);
             }
             shuffle(saca);
-            console.log ("saca barajada: " + saca);
+            console.log("saca barajada:");
+            console.log (saca);
         }
-
         function sacarBola() {
             var numero;
             //numero = Math.floor(Math.random() * 90) + 1;
@@ -116,8 +197,10 @@
         function taparNumeroEnCarton(numeros_carton, posicion)
         {
             let array_tds = document.getElementsByTagName("td");
+
             array_tds[posicion].innerHTML = "*";
             array_tds [posicion].bgColor = "black"; 
+
         }
 
         function hanCantadoBingo ()
@@ -139,6 +222,10 @@
         function jugarAlBingo() {
             var bola;
             var estaBolaEnCarton = false;
+        
+
+           // do {
+                
                 bola = sacarBola();
                 mostrarBola(bola);
                 let posicion = posicionBolaEnCarton(bola);
@@ -149,19 +236,20 @@
                     taparNumeroEnCarton(numeros_carton, posicion);
                     if (hanCantadoBingo ())
                     {
-                        alert ("ENHORABUENA!!!!");
-                        window.location.reload (true);
+                        alert ("ENHORABUENA!!!!")
                     }
                  }
+
         }
 
         //setInterval(function(){ alert("Hello"); }, 3000); para retrasar algo
-        //clearInterval
+        clearInterval
     </script>
 </head>
 
 <body>
     <table id="carton"></table>
+    <span id="resultadoLuisa"></span>
     <input type="submit" value="SACAR BOLA!" onclick="jugarAlBingo()">
     <br><br>
     <span id="bolaSacada"></span>
