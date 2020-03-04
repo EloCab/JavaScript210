@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Saludos</title>
-	<!-- Mobile Specific Metas
+    <meta charset="UTF-8">
+    <title>Saludos</title>
+    <!-- Mobile Specific Metas
 		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- FONT
@@ -14,52 +15,94 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/skeleton.css">
     <style>
-    	img {
-    	  width: 100%;
-    	  height: 150px;
-    	}
-    	p {
-    		text-align: center;
-    	}
-    	.centrado {
-    		display: inline-block;
-    		text-align: center;
-    	}
-	</style>
-	<script>
-		const URL_SERVICIO = "http://192.168.3.89:8080/saludos/LetraDni?numerodni="
-		var xhr = new XMLHttpRequest();
+        img {
+            width: 100%;
+            height: 150px;
+        }
 
-		
-		function calcular ()
-		{
+        p {
+            text-align: center;
+        }
+
+        .centrado {
+            display: inline-block;
+            text-align: center;
+        }
+    </style>
+    <script>
+        const URL_SERVICIO = "http://192.168.3.89:8080/saludos/LetraDni?numerodni="
+        var xhr = new XMLHttpRequest();
+        var dni_extranjero;
+
+        function calcularUrl(num_dni) {
+            let string_servicio;
+ 
+            if (dni_extranjero) {
+                let num_dni_extranjero = num_dni.substring(1, num_dni.length);
+                console.log("numero extranjero " + num_dni_extranjero);
+                string_servicio = URL_SERVICIO + num_dni_extranjero + "&prefijo=" + num_dni.charAt(0);
+            }
+            else {
+                string_servicio = URL_SERVICIO + num_dni
+            }
+            return string_servicio;
+        }
+        function dni_correcto(num_dni) {
+            let correcto;
+            let dni_a_chequear;
+            let prefijo = num_dni.charAt(0);
+            console.log("letra " + prefijo);
+            if (prefijo == 'x') { prefijo = 'X' }
+            if (prefijo == 'y') { prefijo = 'Y' }
+            if (prefijo == 'z') { prefijo = 'Z' }
+            if ((prefijo == 'X') || (prefijo == 'Y') || (prefijo == 'Z')) {
+                dni_a_chequear = num_dni.substring(1, num_dni.length);
+                dni_extranjero = true;
+            }
+            else {
+                dni_a_chequear = num_dni;
+                dni_extranjero = false;
+            }
+            if (isNaN(dni_a_chequear) || (dni_a_chequear.length > 8)) {
+                correcto = false;
+            } else {
+                correcto = true;
+            }
+            return correcto;
+        }
+
+        function calcular() {
             let num_dni = document.getElementById("txtDNI").value;
-			let string_servicio = URL_SERVICIO+num_dni;
-            console.log ("url del servicio : " + string_servicio);
-			xhr.open("GET", string_servicio, true);
-			xhr.onreadystatechange=consultaEstado;
-			xhr.send();
-		}
-		function consultaEstado ()
-		{
-			console.log ("consultaEstado invocada estado =  "+xhr.readyState);
-			if (xhr.readyState==4)
-			{
-				console.log ("La com ha terminado con estatus "+ xhr.status);
-				if (xhr.status==200)
-				{
-					console.log ("La com ha terminado con éxito ");
-					console.log ("Cuerpo de la respuesta "+ xhr.responseText);
-					console.log ("TIPO MIME de la respuesta "+ xhr.responseType);
-					document.getElementById("txtLetra").value = xhr.responseText;
-				}
-				//xhr.responseType
+            if (dni_correcto(num_dni)) {
+                let url = calcularUrl(num_dni);
+                console.log("url del servicio : " + url);
+                xhr.open("GET", url, true);
+                xhr.onreadystatechange = consultaEstado;
+                xhr.send();
+            }
+            else { alert("Por favor, introduzca un DNI correcto"); }
+        }
 
-			}
-		}
-		
-	</script>
+        function consultaEstado() {
+            console.log("consultaEstado invocada estado =  " + xhr.readyState);
+            if (xhr.readyState == 4) {
+                console.log("La com ha terminado con estatus " + xhr.status);
+                if (xhr.status == 200) {
+                    console.log("La com ha terminado con éxito ");
+                    console.log("Cuerpo de la respuesta " + xhr.responseText);
+                    console.log("TIPO MIME de la respuesta " + xhr.responseType);
+                    document.getElementById("txtLetra").value = xhr.responseText;
+                } else if (xhr.readyState == 400) {
+                    alert("MENSAJE DEL SERVIDOR : Por favor, introduzca un DNI correcto");
+                }
+                //xhr.responseType
+
+            }
+        }
+
+    </script>
 </head>
+
 <body>
     <fieldset style="width:400px">
         <legend>CALCULADORA LETRA DNI</legend>
@@ -70,4 +113,5 @@
         <input type="text" id="txtLetra" /><br><br>
     </fieldset>
 </body>
+
 </html>
