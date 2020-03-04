@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Saludos</title>
+	<!-- Mobile Specific Metas
+		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FONT
+		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <!-- CSS
+		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <style>
+    	img {
+    	  width: 100%;
+    	  height: 150px;
+    	}
+    	p {
+    		text-align: center;
+    	}
+    	.centrado {
+    		display: inline-block;
+    		text-align: center;
+    	}
+	</style>
+	<script>
+		const URL_SERVICIO = "http://192.168.3.89:8080/saludos/LetraDni?numerodni="
+		var xhr = new XMLHttpRequest();
+
+		
+		function calcular ()
+		{
+            let num_dni = document.getElementById("txtDNI").value;
+			let string_servicio = URL_SERVICIO+num_dni;
+            console.log ("url del servicio : " + string_servicio);
+			xhr.open("GET", string_servicio, true);
+			xhr.onreadystatechange=consultaEstado;
+			xhr.send();
+		}
+		function consultaEstado ()
+		{
+			console.log ("consultaEstado invocada estado =  "+xhr.readyState);
+			if (xhr.readyState==4)
+			{
+				console.log ("La com ha terminado con estatus "+ xhr.status);
+				if (xhr.status==200)
+				{
+					console.log ("La com ha terminado con éxito ");
+					console.log ("Cuerpo de la respuesta "+ xhr.responseText);
+					console.log ("TIPO MIME de la respuesta "+ xhr.responseType);
+					document.getElementById("txtLetra").value = xhr.responseText;
+				}
+				//xhr.responseType
+
+			}
+		}
+		
+	</script>
+</head>
+<body>
+    <fieldset style="width:400px">
+        <legend>CALCULADORA LETRA DNI</legend>
+        <label>Introduce tu DNI</label><br />
+        <input type="text" id="txtDNI" /><br />
+        <input onclick="calcular()" type="button" id="btnResultado" value="Resultado" /><br />
+        <label>LETRA</label><br />
+        <input type="text" id="txtLetra" /><br><br>
+    </fieldset>
+</body>
+</html>

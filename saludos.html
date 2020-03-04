@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Saludos</title>
+	<!-- Mobile Specific Metas
+		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FONT
+		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+    <!-- CSS
+		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <style>
+    	img {
+    	  width: 100%;
+    	  height: 150px;
+    	}
+    	p {
+    		text-align: center;
+    	}
+    	.centrado {
+    		display: inline-block;
+    		text-align: center;
+    	}
+	</style>
+	<script>
+		const DIR_SERVICIO = "http://192.168.3.61:8080/saludos/Saludos?idioma=";
+		const METODO = "POST";
+		var xhr = new XMLHttpRequest();
+
+		function saludo (idioma)
+		{
+			console.log ("Ha tocado una bandera");
+			//TENGO QUE LLAMRA AL SERVIDOR CON EL IDIOMA
+			xhr.open(METODO, DIR_SERVICIO+idioma);
+			xhr.onreadystatechange = consultaEstado;//programo listener
+			xhr.send("FADJFKLADSF");
+
+		}
+		function consultaEstado ()
+		{
+			if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            document.getElementById("caja_saludos").value = xhr.responseText;
+        } else {document.getElementById("caja_saludos").value = "ERROR....";}
+
+		}
+	</script>
+</head>
+<body>
+	<!--Caja de texto que refleje el saludo
+	cuatro botones cada uno con una bandera 
+	(españa, italia
+	 francia, inglaterra)-->
+	 <div class="container">
+	 	<div class="row">
+	 		<div class="twelve columns"> 
+	 		<h1>Saludos</h1>
+			<input id="caja_saludos" class="centrado" type="text">
+	 		</div>
+	 	</div>
+	 	<div class="row">
+	 		<div class="five columns">
+	 			<img id="es" onclick="saludo(this.id)" src="imagenes/sp.png" alt="">
+	 		</div>
+
+	 		<div class="five columns">
+	 			<img id="it" onclick="saludo(this.id)" src="imagenes/it.png" alt="">
+	 		</div>
+
+	 	</div>
+
+	 	<div class="row">
+	 		<div class="five columns">
+	 			<img id="en" onclick="saludo(this.id)" src="imagenes/uk.png" alt="">
+	 		</div>
+
+	 		<div class="five columns">
+	 			<img id="fr" onclick="saludo(this.id)" src="imagenes/fr.png" alt="">
+	 		</div>
+	 	</div>
+	 </div> 
+</body>
+</html>

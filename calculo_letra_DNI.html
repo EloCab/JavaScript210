@@ -1,31 +1,68 @@
-<!DOCTYPE html>
-<html>
+<! DOCTYPE html >
+< html >
 
-<head>
-    <title>CALCULA LETRA DNI</title>
-    <meta charset="UTF-8">
-    <script>
- 
+< cabeza >
+    < título > CALCULA LETRA DNI </ título >
+    < meta  charset = " UTF-8 " >
+    < guión >
 
+        const  SECUENCIA_LETRAS_DNI  =  "TRWAGMYFPDXBNJZSQVHLCKE" ;
+        / *
+        Obtiene el número del dni contando si es foraneo
+        * /
+        función  transformarDni ( numero )  {
+            var  numero_final  =  0 ;
+            // si el primer caracter es una X
+            if  ( numero . charAt ( 0 )  ==  'Y' )  {
+                    // sustituyo la Y por 1
+                    numero_final  =  numero . reemplazar ( "Y" ,  "1" ) ;
+            }  else  if  ( numero . charAt ( 0 )  ==  'Z' )  {   
+                    // sustituyo la Z por 2
+                    numero_final  =  numero . reemplazar ( "Z" ,  "2" ) ;
+            }  else  if  ( numero . charAt ( 0 )  ==  'X' ) {
+                 // sustituyo la X por 0 o por nada
+                 numero_final  =  numero . subcadena ( 1 ) ; 
+            }  más  {
+                consola . log ( "Dni nacional o X" ) ;
+                numero_final  =  numero ;
+            }
 
-        function calcular() {
- 
-   
+            return  numero_final ;
+
+        }
+        // TODO VALIDAR LA ENTRADA
+        función  calcular ( )  {
+            // todo calcular la letra del dni convertido
+            //http://www.interior.gob.es/web/servicios-al-ciudadano/dni/calculo-del-digito-de-control-del-nif-nie
+            // 1 OBTENER EL NÚMERO DEL DNI INTRODUCIDO
+            var  numero  =  documento . getElementById ( "txtDNI" ) . valor ;
+            //1.1 TRANSFORMAR EL NUMERO
+            var  numero_final  =  transformarDni ( numero ) ;
+            consola . log ( "DNI  modificado " +  numero_final ) ;
+            // 2 CALCULAR EL RESTO de Numero entre 23
+            var  resto  =  numero_final % SECUENCIA_LETRAS_DNI . longitud ;
+            consola . log ( "resto"  +  resto ) ;
+            // 3 OBTENER LA LETRA EQUIVALENTE AL RESTO
+            var  letra  =  SECUENCIA_LETRAS_DNI . charAt ( resto ) ;
+            consola . log ( "letra"  +  letra ) ;
+            // 4 MOSTRAR LA LETRA
+            documento . getElementById ( "txtLetra" ) . valor  =  letra ;
+
 
         }
 
-    </script>
-</head>
+    </ script >
+</ cabeza >
 
-<body>
-    <fieldset style="width:400px">
-        <legend>CALCULADORA LETRA DNI</legend>
-        <label>Introduce tu DNI</label><br />
-        <input type="text" id="txtDNI" /><br />
-        <input onclick="calcular()" type="button" id="btnResultado" value="CALCULAR" /><br />
-        <label>LETRA</label><br />
-        <input type="text" id="txtLetra" /><br><br>
-    </fieldset>
-</body>
+< cuerpo >
+    < fieldset  style = " width: 400px " >
+        < leyenda > CALCULADORA LETRA DNI </ leyenda >
+        < Etiqueta > Introducir tu DNI </ etiqueta > < br />
+        < Entrada  tipo = " texto " ID =" txtDNI " /> < br />
+        < Entrada  onclick = " Calcular () " tipo =" botón " ID =" btnResultado " valor =" CALCULAR LETRA " /> < br />
+        < Etiqueta > LETRA </ etiqueta > < br />
+        < Entrada  tipo = " texto " ID =" txtLetra " /> < br > < br >
+    </ fieldset >
+</ cuerpo >
 
-</html>
+</ html >
