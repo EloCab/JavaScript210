@@ -27,8 +27,8 @@
     	}
 	</style>
 	<script>
-		const DIR_SERVICIO = "http://192.168.3.61:8080/saludos/Saludos?idioma=";
-		const METODO = "POST";
+		const DIR_SERVICIO = "http://192.168.3.59:8080/saludos/Saludos?idioma=";
+		const METODO = "GET";
 		var xhr = new XMLHttpRequest();
 
 		function saludo (idioma)
@@ -37,7 +37,7 @@
 			//TENGO QUE LLAMRA AL SERVIDOR CON EL IDIOMA
 			xhr.open(METODO, DIR_SERVICIO+idioma);
 			xhr.onreadystatechange = consultaEstado;//programo listener
-			xhr.send("FADJFKLADSF");
+			xhr.send();
 
 		}
 		function consultaEstado ()

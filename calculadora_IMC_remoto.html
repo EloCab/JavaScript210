@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CALCULE SU IMC</title>
+    <meta charset="UTF-8">
+    <script>
+        const URL_SERVICIO = "http://192.168.3.82:8080/saludos/CalcularIMC"
+        var xhr = new XMLHttpRequest();
+    
+        function enviaDatos() {
+                var peso = document.getElementById("txtPeso").value;
+                var altura = document.getElementById("txtAltura").value;
+
+                var datosPersona = {
+                    peso: peso,
+                    altura: altura
+                };
+
+                xhr.onreadystatechange = consultaEstado;
+                xhr.open('POST', URL_SERVICIO, true); //indicamos como vamos a enviar los datos, en este caso con el metodo GET al archivo meses.php?num= el valor que le indiquemos en el textbox
+                xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+                xhr.send(JSON.stringify(datosPersona));
+        }
+
+        function consultaEstado() {
+          
+            console.log("consultaEstado invocada estado =  " + xhr.readyState);
+            if (xhr.readyState == 4) {
+                console.log("La com ha terminado con estatus " + xhr.status);
+                if (xhr.status == 200) {
+                    let datosPersonaRespuesta = JSON.parse(xhr.responseText);
+                    document.getElementById("txtResultadoIMC").value = datosPersonaRespuesta.imc_numerico;
+                    document.getElementById("txtInterpretacion").value = datosPersonaRespuesta.imc_nominal;
+                    obtenerIMCImagen(datosPersonaRespuesta.imc_img);
+                    
+                } else if (xhr.readyState == 400) {
+                    alert("MENSAJE DEL SERVIDOR : Por favor, introduzca un ... correcto");
+                }
+            }
+        }
+
+        function obtenerIMCImagen(imc_imagen) {
+            let elemento_img;
+            let elemento_padre = document.getElementById("hook_imagen")
+
+            if (elemento_padre.childElementCount == 0)
+            {
+                elemento_img = document.createElement("img");
+                elemento_padre.appendChild(elemento_img);
+            }
+            else {
+                elemento_img = elemento_padre.firstChild;
+            }
+            elemento_img.src = imc_imagen;
+        }
+
+        function LimpiarDatos() {
+            document.getElementById("txtPeso").value = "";
+            document.getElementById("txtAltura").value = "";
+            document.getElementById("txtResultadoIMC").value = "";
+            document.getElementById("txtInterpretacion").value = "";
+        }
+
+    </script>
+</head>
+
+<body>
+    <fieldset style="width:400px">
+        <legend>CALCULADORA IMC</legend>
+
+        <label>PESO</label>
+        <input type="text" id="txtPeso" /><br />
+        <label>ALTURA</label>
+        <input type="text" id="txtAltura" /><br><br>
+        <input onclick="enviaDatos()" type="button" id="btnResultado" value="Resultado" />
+        &nbsp;&nbsp;&nbsp;
+        <input onclick="LimpiarDatos()" type="button" id="btnLimpiar" value="Limpiar" />
+        <br><br>
+        <label>IMC</label>
+        <input type="text" id="txtResultadoIMC" />
+        <br><br>
+        <label>Interpretación del resultado</label>
+        <input type="text" id="txtInterpretacion" />
+
+
+    </fieldset>
+    <div id="hook_imagen"></div>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>BUSCADOR DE ITUNES</title>
+    <!-- Mobile Specific Metas
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        img{
+          width: auto;
+    	  height: 150px;
+        }
+        div {
+            width: auto;
+            height: 200px;
+        }
+    </style>
+       
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        const URL_SERVICIO = "https://itunes.apple.com/search/?media=music&term="
+        var xhr = new XMLHttpRequest();
+
+        function llamarItunes() {
+            let artista = document.getElementById("txtArtista").value;
+            let url = URL_SERVICIO + artista;
+            console.log("url del servicio : " + url);
+            let cadena_ok = encodeURI(url); // para quitar acentos, caracteres especiales...
+            xhr.open("GET", cadena_ok, true);
+            xhr.onreadystatechange = consultaEstado;
+            xhr.send();
+        }
+
+        function consultaEstado() {
+            console.log("consultaEstado invocada estado =  " + xhr.readyState);
+            if (xhr.readyState == 4) {
+                console.log("La com ha terminado con estatus " + xhr.status);
+                if (xhr.status == 200) {
+                    let datosRespuesta = JSON.parse(xhr.responseText);
+                    representarResultado(datosRespuesta);
+                    //console.log ("respuesta " + datosRespuesta);
+                    //console.log ("contador de ocurrencias: " + datosRespuesta.resultCount);
+                    //console.log ("primera ocurrencia : " + datosRespuesta.results[0].trackName);
+                    //console.log ("pista cancion : " + datosRespuesta[0].previewUrl);
+                    //console.log ("foto cancion : " + datosRespuesta[0].artworkUrl100);
+                    //console.log ("precio cancion : " + datosRespuesta[0].trackName);
+                    //document.getElementById("txtResultadoIMC").value = datosPersonaRespuesta.imc_numerico;
+                    //document.getElementById("txtInterpretacion").value = datosPersonaRespuesta.imc_nominal;
+                    //obtenerIMCImagen(datosPersonaRespuesta.imc_img);
+                } else if (xhr.readyState == 400) {
+                    alert("MENSAJE DEL SERVIDOR : Por favor, introduzca un artista correcto");
+                }
+            }
+        }
+
+        function representarResultado(datosRespuesta) {
+            let elemento_padre_fila = document.getElementById("hook_padre");
+            let elemento_fila;
+            let elemento_padre_nombre = document.getElementById("hook_nombre");
+            let elemento_nombre;
+            let elemento_padre_imagen = document.getElementById("hook_imagen");
+            let elemento_img;
+            let elemento_padre_precio = document.getElementById("hook_precio");
+            let elemento_precio;
+            let elemento_padre_audio = document.getElementById("hook_audio");
+            let elemento_audio;
+            let elemento_audio_hijo
+
+            for (let i = 0; i < datosRespuesta.resultCount; i++) {
+              //  for (let i = 0; i < 3; i++) {
+
+                elemento_fila = document.createElement("div");
+                elemento_padre_fila.appendChild(elemento_fila);
+
+                elemento_nombre = document.createElement("p");
+                elemento_padre_nombre.appendChild(elemento_nombre);
+                elemento_nombre.innerText = datosRespuesta.results[i].trackName;
+
+                elemento_img = document.createElement("img");
+                elemento_padre_imagen.appendChild(elemento_img);
+                elemento_img.src = datosRespuesta.results[i].artworkUrl100;
+
+                elemento_precio = document.createElement("p");
+                elemento_padre_precio.appendChild(elemento_precio);
+                elemento_precio.innerText = datosRespuesta.results[i].trackPrice;
+
+                elemento_audio = document.createElement("audio");
+                elemento_padre_audio.appendChild(elemento_audio);
+                elemento_audio.setAttribute("controls", "true");
+
+                elemento_audio_hijo = document.createElement("source");
+                elemento_audio.appendChild(elemento_audio_hijo);
+
+                elemento_audio_hijo.src = datosRespuesta.results[i].previewUrl;
+
+            }
+
+        }
+
+    </script>
+</head>
+
+<body>
+    <fieldset style="width:400px">
+        <legend>BUSCADOR DE MUSICA</legend>
+        <label>ARTISTA SELECCIONADA</label>
+        <input type="text" id="txtArtista" /><br />
+        <input onclick="llamarItunes()" type="button" id="btnResultado" value="BUSCAR" /><br />
+    </fieldset>
+    <div id="hook_padre" class="container">
+        <div id="hook_fila" class="row">
+            <div class="col-3" id="hook_nombre"></div>
+            <div class="col-3" id="hook_imagen"></div>
+            <div class="col-3" id="hook_precio"></div>
+            <div class="col-3" id="hook_audio"></div>
+        </div>
+    </div>
+   
+</body>
+
+</html>
